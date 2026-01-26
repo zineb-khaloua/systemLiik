@@ -8,9 +8,11 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
+    public function __construct(){
+        $this->authorizeResource(Role::class, 'role');
+    }
     
     public function index(){
-        $this->authorize('viewAny',Role::class);
         $roles=Role::with(['permissions','users'])->get();
         $roleCount=$roles->count();
         $permissionCount=Permission::count();
@@ -19,12 +21,10 @@ class RoleController extends Controller
     }
 
     public function create(){
-        $this->authorize('create',Role::class);
         $permissions=Permission::all();
         return view('roles.create',compact('permissions'));
     }
     public function store(Request $request){
-        $this->authorize('create',Role::class);
         $validated= $request->validate([
             'name'=>'required|string|max:255',
             'permissions'=>'required|array',
@@ -49,7 +49,6 @@ class RoleController extends Controller
 
 
     public function edit(Role $role){
-        $this->authorize('update',$role);
 
         $roles=Role::all();
         $permissions=Permission::all();
@@ -57,7 +56,6 @@ class RoleController extends Controller
    }
 
     public function update(Request $request, Role $role){
-        $this->authorize('update',$role);
         $validated =$request->validate([
             'name'=>'required|string|max:255',
             "permissions"=>'required|array',
@@ -74,7 +72,6 @@ class RoleController extends Controller
 
     }
     public function destroy(Role $role){
-        $this->authorize('delete',$role);
         $role->delete();
         return redirect()->route('roles.index')->with('success','Role supprimé avec succès');
 
