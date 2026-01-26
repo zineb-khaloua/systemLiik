@@ -11,24 +11,26 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+    $this->authorizeResource(User::class, 'user');
+    }
     
   
     public function index()
     {
-        $this->authorize('viewAny',User::class);
+        
         $users=User::all();
         return view('users.index',compact('users'));
     }
 
     public function create()
     {
-        $this->authorize('create',User::class);
         return view('users.create');
     }
 
     public function store(Request $request)
     {
-        $this->authorize('create',User::class);
         $validated= $request->validate([
             'name'=>'required|string|max:255',
             'email'=>'required|string|email|max:255|unique:users',
@@ -48,14 +50,12 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $this->authorize('update',$user);
         $roles = Role::all();
         return view('users.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, User $user)
     {
-        $this->authorize('update',$user);
         $validated=$request->validate([
             'name'=>'required|string|max:255',
             'email'=>'required|string|email|max:255|unique:users,email,'.$user->id,
@@ -79,7 +79,6 @@ class UserController extends Controller
 
     public function destroy(  User $user)
     {
-        $this->authorize('delete',$user);
         $user->delete();
         return redirect()->back()->with('success','Utilisateur supprimé avec succès !' );
     }
