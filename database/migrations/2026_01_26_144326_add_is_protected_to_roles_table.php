@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-$table->foreignId('role_id')
-      ->constrained('roles')
-      ->nullOnDelete()
-      ->after('id');
-        });
+        Schema::table('roles', function (Blueprint $table) {
+              $table->boolean('is_protected')->default(false)->after('name');
+       });
     }
 
     /**
@@ -24,9 +21,11 @@ $table->foreignId('role_id')
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-             $table->dropForeign(['role_id']);
-             $table->dropColumn('role_id');
+        Schema::table('roles', function (Blueprint $table) {
+            Schema::table('roles', function (Blueprint $table) {
+            $table->dropColumn('is_protected');
+            });
         });
     }
 };
+

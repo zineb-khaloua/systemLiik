@@ -10,9 +10,11 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
+    public function __construct(){
+        $this->authorizeResource(Permission::class,'permission');
+    }
     public function index()
     {
-        $this->authorize('viewAny',Permission::class);
         $permissions = Permission::with('roles')->orderBy('id','desc')->get();
 
         return view('permissions.index', compact('permissions'));
@@ -20,14 +22,12 @@ class PermissionController extends Controller
 
     public function create()
     {
-        $this->authorize('create',Permission::class);
         $roles = Role::all();
         return view('permissions.create', compact('roles'));
     }
 
     public function store(Request $request)
     {
-        $this->authorize('create',Permission::class);
         $validated = $request->validate([
             'name' => 'required|string|unique:permissions,name',
             'roles' => 'array'
@@ -44,14 +44,12 @@ class PermissionController extends Controller
 
     public function edit(Permission $permission )
     {
-        $this->authorize('update',Permission::class);
         $roles=Role::all();
         return view('permissions.edit', compact('permission','roles'));
     }
 
     public function update(Request $request, Permission $permission)
     {
-        $this->authorize('update',Permission::class);
         $validated = $request->validate([
             'name' => 'required|string|unique:permissions,name,' . $permission->id
         ]);
@@ -63,9 +61,7 @@ class PermissionController extends Controller
 
     public function destroy(Permission $permission)
     {
-        $this->authorize('delete',Permission::class);
         $permission->delete();
- 
         return redirect()->route('permissions.index')->with('success', 'Permission supprimée avec succès.');
     }
 }

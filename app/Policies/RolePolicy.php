@@ -12,48 +12,45 @@ class RolePolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $authUser): bool
+    public function viewAny(User $user): bool
     {
-        return $authUser->hasRole('admin');
+        return $user->can('roles.view');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $authUser, Role $role): bool
+    public function view(User $user, Role $role): bool
     {
-        //
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $authUser): bool
+    public function create(User $user): bool
     {
-        return $authUser->hasRole('admin');
+        return $user->can('roles.create');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $authUser, Role $role): bool
+    public function update(User $user, Role $role): bool
     {
-        return $authUser->hasRole('admin');
-
+        return $user->can('roles.update');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $authUser, Role $role): bool
+    public function delete(User $user, Role $role): bool
+    
     {
-        if (! $authUser->hasRole('admin'))
-            {
+        if (!$user->can('roles.delete')) {
             return false;
-            } 
-            return $role->name !=='admin';
-   }
-
+        }
+        return $role->is_protecetd;
+    }
     /**
      * Determine whether the user can restore the model.
      */
@@ -61,12 +58,13 @@ class RolePolicy
     {
         //
     }
+   
 
     /**
      * Determine whether the user can permanently delete the model.
      */
     public function forceDelete(User $user, Role $role): bool
     {
-        //
+
     }
 }
