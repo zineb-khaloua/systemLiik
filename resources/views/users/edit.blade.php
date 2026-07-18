@@ -39,7 +39,7 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Nom complet</label>
-                                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user->name) }}" required>
+                                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user->name) }}" >
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -47,7 +47,7 @@
                             
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Email</label>
-                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user->email) }}" required>
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user->email) }}" >
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -64,7 +64,7 @@
                             
                             <div class="col-md-6">
                                 <label class="form-label fw-bold">Rôle</label>
-                                <select class="form-select @error('role') is-invalid @enderror" name="role" required>
+                                <select class="form-select @error('role') is-invalid @enderror" name="role" >
                                     @foreach($roles as $role)
                                         <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
                                             {{ ucfirst($role->name) }}

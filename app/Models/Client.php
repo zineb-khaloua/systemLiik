@@ -18,7 +18,8 @@ class Client extends Model
         'adresse',
         'telephone',
         'email',
-        'ville',
+        'type',
+
         
 
     ];
@@ -30,7 +31,7 @@ class Client extends Model
     public function bon_livraisons(){
         return $this->hasMany(BonLivraison::class);
     }
-    public function bon_commandes(){
+    public function commandes(){
         return $this->hasMany(BonCommande::class);
     }
     public function factures(){

@@ -20,7 +20,8 @@ class UserController extends Controller
     public function index()
     {
         $users=User::all();
-        return view('users.index',compact('users'));
+        $roles=Role::all();
+        return view('users.index',compact('users','roles'));
     }
 
     public function create()
@@ -43,6 +44,10 @@ class UserController extends Controller
             'password'=>Hash::make( $validated['password']),
         ]);
         $user->assignRole($validated['role']);
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Utilisateur créé avec succès !']);
+        }
 
         return redirect()->back()->with('success','Utilisateur créé avec succès !' );
     }

@@ -49,7 +49,10 @@ class RolePolicy
         if (!$user->can('roles.delete')) {
             return false;
         }
-        return $role->is_protecetd;
+        if ($role->is_protected) {
+            return false;
+        }
+          return true;
     }
     /**
      * Determine whether the user can restore the model.

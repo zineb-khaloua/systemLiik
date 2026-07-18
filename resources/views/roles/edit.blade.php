@@ -12,6 +12,7 @@
             <h2 class="fw-bold m-0 text-dark">Modifier le Rôle</h2>
              <nav aria-label="breadcrumb">
                 <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-decoration-none">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('roles.index') }}" class="text-decoration-none">Rôles</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Modifier</li>
                 </ol>

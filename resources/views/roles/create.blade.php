@@ -11,6 +11,7 @@
             <h2 class="fw-bold m-0 text-dark">Nouveau Rôle</h2>
              <nav aria-label="breadcrumb">
                 <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-decoration-none">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('roles.index') }}" class="text-decoration-none">Rôles</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Créer</li>
                 </ol>
@@ -28,8 +29,11 @@
                 <h5 class="fw-bold mb-4">Détails du Rôle</h5>
                 <div class="mb-3">
                     <label class="form-label text-muted fw-bold">Nom du Rôle</label>
-                    <input type="text" name="name" class="form-control form-control-lg bg-light border-0" placeholder="Ex: Comptable">
-                </div>
+                    <input type="text" name="name" value="{{old('name')}}" class="form-control form-control-lg bg-light border-0  @error('name') is-invalid @enderror" placeholder="Ex: Comptable">
+                    @error('name')
+                  <div class="invalid-feedback">{{$message}}</div>
+                   @enderror 
+                   </div>
              </div>
         </div>
         
@@ -44,29 +48,40 @@
                 </div>
 
                 <div class="row g-4">
-                    <!-- Commercial Group -->
-                    <div class="col-12">
-                        <div class="p-3 bg-light rounded-4">
-                            <h6 class="fw-bold text-primary mb-3"> <i class="fas fa-shield-alt me-2"></i>permission</h6>
-                           
-                            <div class="row g-3">
-                                 @foreach($permissions as $permission)
-                                <div class="col-md-3">
-                                    <div class="form-check">
-                                        <input 
-                                        class="form-check-input permission-checkbox"
-                                         type="checkbox" 
-                                         name="permissions[]"
-                                         value="{{$permission->name}}"
-                                         id="perm_{{$permission->id}}" 
-                                         >
-                                        <label class="form-check-label" for="perm_{{$permission->id}}">{{$permission->name}}</label>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
+    <div class="col-12">
+        <div class="p-3 bg-light rounded-4">
+            <h6 class="fw-bold text-primary mb-3">
+                <i class="fas fa-shield-alt me-2"></i> Permission
+            </h6>
+
+            @error('permissions')
+                <div class="alert alert-danger py-2">
+                    {{ $message }}
+                </div>
+            @enderror
+
+            <div class="row g-3">
+                @foreach($permissions as $permission)
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input
+                                class="form-check-input permission-checkbox"
+                                type="checkbox"
+                                name="permissions[]"
+                                value="{{ $permission->name }}"
+                                id="perm_{{ $permission->id }}"
+                                {{ in_array($permission->name, old('permissions', [])) ? 'checked' : '' }}
+                            >
+                            <label class="form-check-label" for="perm_{{ $permission->id }}">
+                                {{ $permission->name }}
+                            </label>
                         </div>
                     </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
         </div>

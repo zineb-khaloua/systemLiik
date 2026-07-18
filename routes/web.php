@@ -5,6 +5,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\FournisseurController;
+use App\Http\Controllers\CategorieController;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -46,14 +49,17 @@ Route::get('/settings', [UserController::class, 'settings'])->name('settings.ind
 Route::get('/profile', [UserController::class, 'profile'])->name('profile.show');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 });
+Route::middleware(['auth'])->group(function(){
+    Route::resource('clients',ClientController::class);
+});
 
-Route::get('/clients', function () {
-    return view('clients.index');
-})->name('clients.index');
+Route::middleware(['auth'])->group(function(){
+    Route::resource('fournisseurs',FournisseurController::class);
+});
 
-Route::get('/clients/create', function () {
-    return view('clients.create');
-})->name('clients.create');
+// Route::get('/clients/create', function () {
+//     return view('clients.create');
+// })->name('clients.create');
 
 // Products
 Route::get('/products', function () {
@@ -64,9 +70,9 @@ Route::get('/products/create', function () {
     return view('products.create');
 })->name('products.create');
 
-Route::get('/categories', function () {
-    return view('categories.index');
-})->name('categories.index');
+Route::middleware(['auth'])->group(function(){
+    Route::resource('categories', CategorieController::class);
+});
 
 // Commercial
 Route::get('/orders', function () {

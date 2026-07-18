@@ -18,7 +18,7 @@ class Produit extends Model
         'categorie_id',
         'nom_produit',
         'designation',
-        'prix_achat',
+       
         'prix_vente',
         'taux_tva',
         'stock_actuel',
@@ -28,6 +28,12 @@ class Produit extends Model
     public function categories(){
         return $this->belongsTo(Categorie::class);
     }
+    public function fournisseurs()
+{
+    return $this->belongsToMany(Fournisseur::class)
+                ->withPivot('prix_achat','reference_fournisseur')
+                ->withTimestamps();
+}
     public function devis_items(){
         return $this->hasMany(DevisItem::class);
     }

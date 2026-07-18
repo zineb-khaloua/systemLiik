@@ -4,19 +4,20 @@
 <div class="container-fluid p-0">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="fw-bold m-0 text-dark">Nouveau Client</h2>
+            <h2 class="fw-bold m-0 text-dark">Modifier Client</h2>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-decoration-none">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('clients.index') }}" class="text-decoration-none">Clients</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Nouveau</li>
+                    <li class="breadcrumb-item active" aria-current="page">Modifier</li>
                 </ol>
             </nav>
         </div>
     </div>
 
-    <form action="{{ route('clients.store') }}" method="POST">
+    <form action="{{ route('clients.update', $client->id) }}" method="POST">
       @csrf
+      @method('PUT')
     <div class="row">
             <div class="col-12">
                 <div class="card border-0 shadow-sm rounded-4 mb-4">
@@ -29,7 +30,7 @@
                                 <label class="form-label fw-bold">Nom Complet <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                    <input type="text" class="form-control" name="nom_complet"  >
+                                    <input type="text" class="form-control" name="nom_complet" value="{{ old('nom_complet', $client->nom_complet) }}" >
                                 </div>
                             </div>
                         </div>
@@ -39,14 +40,14 @@
                                 <label class="form-label fw-bold">Email <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                    <input type="email" class="form-control" name="email" >
+                                    <input type="email" class="form-control" name="email" value="{{ old('email', $client->email) }}">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Téléphone <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                    <input type="text" class="form-control" name="telephone"  >
+                                    <input type="text" class="form-control" name="telephone" value="{{ old('telephone', $client->telephone) }}" >
                                 </div>
                             </div>
                         </div>
@@ -58,10 +59,10 @@
                                     <span class="input-group-text"><i class="fas fa-city"></i></span>
                                    <select name="type" id="type" class="form-control" >
                                     <option value="">Selectionner un type de client</option>
-                                    <option value="particulier">Particulier</option>
-                                    <option value="entreprise">Entreprise</option>
-                                    <option value="institutionnel">Institutionnel</option>
-                                    <option value="auto-entrepreneur">Auto-entrepreneur</option>
+                                    <option value="particulier" {{ old('type', $client->type) == 'particulier' ? 'selected' : '' }}>Particulier</option>
+                                    <option value="entreprise" {{ old('type', $client->type) == 'entreprise' ? 'selected' : '' }}>Entreprise</option>
+                                    <option value="institutionnel" {{ old('type', $client->type) == 'institutionnel' ? 'selected' : '' }}>Institutionnel</option>
+                                    <option value="auto-entrepreneur" {{ old('type', $client->type) == 'auto-entrepreneur' ? 'selected' : '' }}>Auto-entrepreneur</option>
                                    </select>
                                 </div>
                             </div>
@@ -70,7 +71,7 @@
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Adresse <span class="text-danger">*</span></label>
-                            <textarea class="form-control" name="adresse" rows="3"></textarea>
+                            <textarea class="form-control" name="adresse" rows="3">{{ old('adresse', $client->adresse) }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -80,7 +81,7 @@
                         Annuler
                     </a>
                     <button type="submit" class="btn btn-primary-custom btn-lg px-5 fw-bold text-white shadow-sm">
-                        <i class="fas fa-plus me-2"></i> Ajouter
+                        <i class="fas fa-save me-2"></i> Modifier
                     </button>
                 </div>
             </div>

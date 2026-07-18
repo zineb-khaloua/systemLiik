@@ -56,9 +56,13 @@
                                         </div>
                                     </div>
                                 </td>
-                                @foreach($user->roles as $role)
-                                <td><span class="badge bg-dark">{{$role->name ?? '-'}}</span></td>
-                                @endforeach
+                                <td>
+                                    @forelse($user->roles as $role)
+                                        <span class="badge bg-dark me-1">{{ $role->name }}</span>
+                                    @empty
+                                        <span class="text-muted">-</span>
+                                    @endforelse
+                                </td>
 
                                 <td class="text-muted">{{$user->email}}</td>
                                 <td class="text-muted small">{{$user->last_login_at}}</td>
@@ -101,27 +105,36 @@
                     @csrf
                     <div class="col-md-6">
                         <label class="form-label fw-bold">Nom complet</label>
-                        <input type="text" name="name" class="form-control" placeholder="Nom Prénom">
+                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Nom Prénom" value="{{ old('name') }}">
+                        @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                      <div class="col-md-6">
                         <label class="form-label fw-bold">Email</label>
-                        <input type="email" name="email" class="form-control" placeholder="email@exemple.com">
-                    </div>
+                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="email@exemple.com" value="{{ old('email') }}">
+                        @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                     </div>
                      <div class="col-md-6">
                         <label class="form-label fw-bold">Mot de passe</label>
-                        <input type="password" name="password" class="form-control" >
+                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" >
+                        @error('password')
+                        <div class="invalid-feedback"> {{$message}}</div>
+                        @enderror
                     </div>
-                     <div class="col-md-6">
-                        <label class="form-label fw-bold">Confirmer mot de passe</label>
-                        <input type="password" name="password_confirmation" class="form-control" >
-                    </div>
+   
                      <div class="col-md-12">
                         <label class="form-label fw-bold">Rôle</label>
-                        <select class="form-select" name="role">
-                            <option>admin</option>
-                            <option>commercial</option>
-                            <option>comptable</option>
+                        <select class="form-select @error('role') is-invalid @enderror" name="role">
+                           @foreach($roles as $role)
+                        <option value="{{$role->name}}">{{$role->name}}</option>
+                           @endforeach
                         </select>
+                        @error('role')
+                        <div class="invalid-feedback">{{$message}}</div>
+                        @enderror
     
                     </div>
                 </form>
@@ -138,6 +151,16 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+@if ($errors->hasAny(['name', 'email', 'password', 'role']))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var addUserModal = new bootstrap.Modal(
+            document.getElementById('addUserModal')
+        );
+        addUserModal.show();
+    });
+</script>
+@endif
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -148,14 +171,14 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
 
             Swal.fire({
-                title: 'Are you sure?',
-                text: "This action cannot be undone!",
+                title: ' Etes-vous sûr de vouloir supprimer ce rôle ?',
+                text: " Cette action ne peut pas être annulée !",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
                 cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel'
+                confirmButtonText: 'Oui, Supprimer',
+                cancelButtonText: 'Non,Annuler'
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.submit();

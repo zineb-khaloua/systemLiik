@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('adresse');
             $table->string('telephone');
             $table->string('email');
-            $table->string('ville');
+            $table->enum('type',['particulier','entreprise','institutionnel','auto-entrepreneur'])->default('particulier');
             $table->timestamps();
         });
     }

@@ -45,7 +45,7 @@
             <i class="fas fa-shopping-bag"></i>
             <span>Achats</span>
         </a>
-        <a href="#" class="nav-link">
+        <a href="{{ route('fournisseurs.index') }}" class="nav-link">
             <i class="fas fa-truck"></i>
             <span>Fournisseurs</span>
         </a>
